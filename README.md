@@ -1,0 +1,1 @@
+# Angular-Minimal-Chat-Application
