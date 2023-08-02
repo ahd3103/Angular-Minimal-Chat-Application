@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ChatservicesService } from '../services/chatservices.service';
-import { User } from '../model/registration.model';
+import { User } from '../model/User.model';
 //import swal from 'sweetalert';
 
 
@@ -26,7 +26,7 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {}
 
   registerUser() {
-    this.chatService.postAlluser(this.user).subscribe(
+    this.chatService.postUserRegister(this.user).subscribe(
       (res) => {
         console.log(res);
         ///swal('Success!', 'Registration successfully Completed.', 'success');

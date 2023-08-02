@@ -4,9 +4,11 @@ export class User{
   password: string | undefined;
 }
 
-export class UserResponse{
-  name: string | undefined;
+export class Login{
   email: string | undefined;
-  message: string | undefined;
+  password: string | undefined;
 }
+
+
+
 
