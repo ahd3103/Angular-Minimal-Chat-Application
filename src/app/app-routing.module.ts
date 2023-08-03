@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { UserListComponent } from './user-list/user-list.component';
-//import { ConversationHistoryComponent } from './conversation-history/conversation-history.component';
+import { ConversationHistoryComponent } from './conversation-history/conversation-history.component';
 
 
 const routes: Routes = [
@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'user', component: UserListComponent },
-  //{ path: 'conversationhistory', component:  ConversationHistoryComponent },
+  { path: 'conversationhistory', component:  ConversationHistoryComponent },
   
   
 ];

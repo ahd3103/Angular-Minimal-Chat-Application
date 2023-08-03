@@ -98,3 +98,12 @@
     background-color: #005a9e;
   }
   
+
+  .conversation-history {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .message {
+    clear: both;
+  }

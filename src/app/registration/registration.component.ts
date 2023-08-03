@@ -1,41 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { ChatservicesService } from '../services/chatservices.service';
 import { User } from '../model/User.model';
-//import swal from 'sweetalert';
-
+import { FormControl, FormGroup, Validators } from '@angular/forms'; 
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent {
   user: User;
   successMessage: string | undefined;
   errorMessage = '';
+  registrationForm: FormGroup; 
 
-  constructor(
-    private chatService: ChatservicesService,
-    private router: Router
-  ) {
+  constructor(private chatService: ChatservicesService) {
     this.user = new User();
+    this.registrationForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$/)])
+    });
   }
 
-  ngOnInit(): void {}
-
   registerUser() {
-    this.chatService.postUserRegister(this.user).subscribe(
-      (res) => {
-        console.log(res);
-        ///swal('Success!', 'Registration successfully Completed.', 'success');
-        this.router.navigate(['/login']); // Redirect to login page on successful registration
-      },
-      (err) => {
-        console.log(err);
-        //swal('Error!', err, 'error');
-      }
-    );
+    if (this.registrationForm.valid) {
+      this.user.name = this.registrationForm.get('name')?.value;
+      this.user.email = this.registrationForm.get('email')?.value;
+      this.user.password = this.registrationForm.get('password')?.value;
+
+      this.chatService.postUserRegister(this.user).subscribe(
+        (res) => {
+          console.log(res);
+          this.successMessage = 'Registration successfully completed.';
+          this.resetForm();
+        },
+        (err) => {
+          console.log(err);
+          this.errorMessage = err;
+        }
+      );
+    } else {
+      this.errorMessage = 'Please fill out all required fields.';
+    }
+  }
+
+  private resetForm(): void {
+    this.registrationForm.reset();
+    this.errorMessage = '';
   }
 }

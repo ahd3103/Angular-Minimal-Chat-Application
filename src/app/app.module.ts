@@ -7,7 +7,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UserListComponent } from './user-list/user-list.component';
-//import { ConversationHistoryComponent } from './conversation-history/conversation-history.component';
+import { ConversationHistoryComponent } from './conversation-history/conversation-history.component';
 
 
 @NgModule({
@@ -16,7 +16,7 @@ import { UserListComponent } from './user-list/user-list.component';
     RegistrationComponent,
     LoginComponent,
     UserListComponent,
-    //ConversationHistoryComponent
+    ConversationHistoryComponent
   
   ],
   imports: [
