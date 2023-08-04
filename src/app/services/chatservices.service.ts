@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environment/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
-import { UserModel, UserResponse } from '../model/UserResponce.model';
+import { LogResponse, UserModel, UserResponse } from '../model/UserResponce.model';
 import { Login, User } from '../model/User.model';
 import { FormGroup } from '@angular/forms';
 import { Message } from '../model/Message.model';
@@ -47,13 +47,9 @@ export class ChatservicesService {
 
 sendMessage(receiver: string, message: string): Observable<Message> {
   const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('jwtToken')}`);
-  debugger;
   const url = `${this.apiUrl}Message/sendMessage?receiver=${encodeURIComponent(receiver)}&message=${encodeURIComponent(message)}`;
   return this.http.post<Message>(url, { headers }); 
-
- 
 }
-
 
  editMessage(messageId: string, message:string): Observable<string>{
   const headers = new HttpHeaders().set('Authorization', `bearer ${localStorage.getItem('jwtToken')}`);
@@ -63,6 +59,15 @@ sendMessage(receiver: string, message: string): Observable<Message> {
  deleteMessage(messageId: string):Observable<string>{
   const headers = new HttpHeaders().set('Authorization', `bearer ${localStorage.getItem('jwtToken')}`);
    return this.http.delete<string>(`${this.apiUrl}Message/messages/${messageId}`,{headers});
+  }
+
+  getLogs(startDateTime: number, endDateTime: number): Observable<LogResponse[]> {
+    const params = new HttpParams()
+      .set('startDateTime', startDateTime.toString())
+      .set('endDateTime', endDateTime.toString());
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('jwtToken')}`);
+    const options = { params, headers };
+    return this.http.get<LogResponse[]>(this.apiUrl + 'logs', options);
   }
 
 }

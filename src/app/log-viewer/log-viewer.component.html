@@ -1,0 +1,34 @@
+<h1>Request Logs Viewer</h1>
+
+<div>
+  <label for="timeframe">Select Timeframe:</label>
+  <select id="timeframe" [(ngModel)]="selectedTimeframe" (change)="onTimeframeSelect()">
+    <option *ngFor="let option of timeframeOptions" [value]="option">{{ option }} mins</option>
+  </select>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>IP Of Caller</th>
+      <th>Method</th>
+      <th>Path</th>
+      <th>Query String</th>
+      <th>Request Body</th>
+      <th>Time Of Call</th>
+      <th>User Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let log of logs">
+      <td>{{ log.IPOfCaller }}</td>
+      <td>{{ log.Method }}</td>
+      <td>{{ log.Path }}</td>
+      <!-- Handle the possibly undefined QueryString -->
+      <td>{{ log.QueryString?.Key }}: {{ log.QueryString?.Value }}</td>
+      <td>{{ log.RequestBody }}</td>
+      <td>{{ log.TimeOfCall | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+      <td>{{ log.UserName }}</td>
+    </tr>
+  </tbody>
+</table>

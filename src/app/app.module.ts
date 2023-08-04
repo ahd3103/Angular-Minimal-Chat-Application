@@ -7,8 +7,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UserListComponent } from './user-list/user-list.component';
-import { ConversationHistoryComponent } from './conversation-history/conversation-history.component';
-
+import { LogViewerComponent } from './log-viewer/log-viewer.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +15,8 @@ import { ConversationHistoryComponent } from './conversation-history/conversatio
     RegistrationComponent,
     LoginComponent,
     UserListComponent,
-    ConversationHistoryComponent
+    LogViewerComponent,
+ 
   
   ],
   imports: [

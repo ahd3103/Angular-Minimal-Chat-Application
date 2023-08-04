@@ -11,15 +11,26 @@ export class UserResponse{
     profile:UserResponse | undefined;
   }
 
-  
-
   export class LogResponse{
     IPOfCaller: string | undefined;
     Method: string | undefined;
     Path: string | undefined;
+    QueryString: QueryString | undefined; 
     RequestBody: string | undefined;
     TimeOfCall: number | undefined;
     UserName: string | undefined;
   }
+
+  export class QueryString {
+    Key: string | undefined;
+    Value: string | undefined;
+  }
+
+  
+  
+  
+  
+  
+  
 
 
