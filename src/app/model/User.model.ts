@@ -10,6 +10,13 @@ export class Login{
   password: string | undefined;
 }
 
+export interface SendMessageRequest {
+  receiverId: string;
+  content: string;
+}
+
+
+
 
 
 

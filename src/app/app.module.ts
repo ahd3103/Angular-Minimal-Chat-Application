@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UserListComponent } from './user-list/user-list.component';
 import { LogViewerComponent } from './log-viewer/log-viewer.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -15,8 +16,7 @@ import { LogViewerComponent } from './log-viewer/log-viewer.component';
     RegistrationComponent,
     LoginComponent,
     UserListComponent,
-    LogViewerComponent,
- 
+    LogViewerComponent
   
   ],
   imports: [
@@ -24,7 +24,8 @@ import { LogViewerComponent } from './log-viewer/log-viewer.component';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

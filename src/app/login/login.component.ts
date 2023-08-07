@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       this.chatservice.postUserLogin(loginUser).subscribe(
         (data:UserModel) => {
           if (data.token) {
-            debugger;
+           // debugger;
             localStorage.setItem('jwtToken', data.token);
             localStorage.setItem('currentUser', data.profile?.userId!);
             this.router.navigate(['user']);

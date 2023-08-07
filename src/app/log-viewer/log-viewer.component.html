@@ -1,34 +1,38 @@
-<h1>Request Logs Viewer</h1>
 
-<div>
-  <label for="timeframe">Select Timeframe:</label>
-  <select id="timeframe" [(ngModel)]="selectedTimeframe" (change)="onTimeframeSelect()">
-    <option *ngFor="let option of timeframeOptions" [value]="option">{{ option }} mins</option>
-  </select>
+<div class="history-wrapper" *ngIf="selectedUserId !== null && userInfo" (click)="hideOptions()">
+  <div class="history-header" *ngIf="userInfo">
+    <div class="header-name">
+      <img src="../../../assets/img-1.jpg" alt="placeholder" />
+      <h3>{{ userInfo }}</h3>
+    </div>
+  </div>
+  <ul class="mss-style">
+    <li *ngFor="let message of receivedData; let i = index">
+      <div class="message-content"
+        [ngClass]="{'sender': message.senderId === selectedUserId, 'receiver': message.senderId !== selectedUserId}"
+        (contextmenu)="onRightClick($event, i)">
+        <div *ngIf="!message.isEditing">
+          {{ message.content }}
+        </div>
+        <div *ngIf="message.isEditing">
+          <input type="text" [(ngModel)]="editedMessageContent" placeholder="Edit message">
+          <button (click)="saveEditedMessage(message)">Save</button>
+          <button (click)="cancelEdit(message)">Cancel</button>
+        </div>
+        <p>{{ message.createdAt | date: 'HH:mm' }}</p>
+      </div>
+      <div class="options" *ngIf="showOptionsIndex === i && message.senderId !== selectedUserId">
+        <button (click)="editMessage(message)">Edit</button>
+        <button (click)="deleteMessage(message.id)">Delete</button>
+      </div>
+    </li>
+  </ul>
+  <div class="sorting">
+    <button *ngIf="receivedData.length >= messageLimit" (click)="loadMoreMessages()">Load More</button>
+    <button *ngIf="receivedData.length >= 2" (click)="toggleSortOrder()">Sort Messages</button>
+  </div>
+  <div class="send-msg-wrapper">
+    <input type="text" [(ngModel)]="messageContent" placeholder="Enter msg">
+    <button (click)="sendMessage()">Send</button>
+  </div>
 </div>
-
-<table>
-  <thead>
-    <tr>
-      <th>IP Of Caller</th>
-      <th>Method</th>
-      <th>Path</th>
-      <th>Query String</th>
-      <th>Request Body</th>
-      <th>Time Of Call</th>
-      <th>User Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let log of logs">
-      <td>{{ log.IPOfCaller }}</td>
-      <td>{{ log.Method }}</td>
-      <td>{{ log.Path }}</td>
-      <!-- Handle the possibly undefined QueryString -->
-      <td>{{ log.QueryString?.Key }}: {{ log.QueryString?.Value }}</td>
-      <td>{{ log.RequestBody }}</td>
-      <td>{{ log.TimeOfCall | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
-      <td>{{ log.UserName }}</td>
-    </tr>
-  </tbody>
-</table>

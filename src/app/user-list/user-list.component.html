@@ -1,44 +1,67 @@
-<!-- <h4>User List</h4>
-<button (click)="refreshUsers()" class="refresh-btn">Refresh User List</button>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="overflow: hidden;height: 765px;">
     <div class="row">
-        <ol class="user-list">
-            <li *ngFor="let user of users">
-                <div class="user-info">
-                    <p class="name">Name: {{ user.name }}</p>
-                    <p class="email">Email: {{ user.email }}</p>
-                </div>
-                <hr>
-            </li>
-        </ol>
-    </div>
-</div> -->
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="overflow-y: auto;height: 765px;">
             <div class="user-list">
-                <div class="user-item" *ngFor="let user of users" (click)="getChatHistory(user.userId)">
+                <div class="user-item" *ngFor="let user of users" (click)="getChatHistory(user)">
                     <div class="user-avatar">{{ getInitials(user.name || '') }}</div>
                     <div class="user-details">
                         <div class="user-name">{{ user.name }}</div>
                         <div class="user-email">{{ user.email }}</div>
                         <!-- Add other user details if needed -->
+
                     </div>
                 </div>
             </div>
 
         </div>
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+        <div class="col-lg-8 col-md-4 col-sm-4 col-xs-4" style="overflow-y: auto;">
+            <app-log-viewer></app-log-viewer>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
             <div class="chat-box">
                 <div class="conversation-history">
                     <div *ngFor="let msg of messages">
-                        <div *ngIf="msg.senderId === currentUser">
-                            <!-- Display the sender's message on the right -->
+                        <div class="message-container" (contextmenu)="showContextMenu = true"
+                            *ngIf="msg.senderId === currentUser" (mouseenter)="showOptions = true"
+                            (mouseleave)="showOptions = false">
+                  Display the sender's message on the right 
                             <span style="float: right;">{{ msg.senderId }}: {{ msg.content }}</span>
-                        </div>
-                        <div *ngIf="msg.receiverId === currentUser ">
-                            <!-- Display the receiver's message on the left -->
+                            <span class="options" *ngIf="showOptions">
+                                <a type="button" class="btn btn-secondary" class="btn btn-secondary"
+                                    data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top"
+                                    data-bs-content="Top popover">
+                                    <div id="popoverContent" *ngIf="!showContextMenu">
+                                        <div class="menu-item" (click)="editMessagedot()">Edit</div>
+                                        <div class="menu-item" (click)="deleteMessagedot()">Delete</div>
+                                    </div>
+
+                                </a>
+
+                            </span>
+
+                        </div> -->
+
+<!-- <div class="message-container" (contextmenu)="showContextMenu = true"
+                            *ngIf="msg.receiverId === currentUser " (mouseenter)="showOptions = true"
+                            (mouseleave)="showOptions = false">
+                        Display the receiver's message on the left 
                             <span style="float: left;">{{ msg.receiverId }}: {{ msg.content }}</span>
+
+                            <span class="options" *ngIf="showOptions" (click)="hideContextMenu()">
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                            </span>
+                            <div class="context-menu" *ngIf="showContextMenu">
+                                <div class="menu-item" (click)="editMessagedot()">Edit</div>
+                                <div class="menu-item" (click)="deleteMessagedot()">Delete</div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -51,3 +74,8 @@
         </div>
     </div>
 </div>
+Context Menu 
+<div class="context-menu" *ngIf="showContextMenu">
+    <div class="menu-item" (click)="editMessagedot()">Edit</div>
+    <div class="menu-item" (click)="deleteMessagedot()">Delete</div>
+</div>-->

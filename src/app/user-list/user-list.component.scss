@@ -107,3 +107,95 @@
   .message {
     clear: both;
   }
+
+  .item-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .options {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px;
+  }
+  
+  .item-container:hover .options {
+    display: flex;
+  }
+  
+  .edit,
+  .delete {
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .item-text {
+    margin-right: 10px;
+  }
+
+
+  .message-container {
+    position: relative;
+    display: block;
+    cursor: pointer;
+  }
+  
+  .message {
+    display: inline-block;
+    padding: 5px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+  }
+  
+  .options {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    display: none;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  
+  .dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background-color: #000;
+    border-radius: 50%;
+    margin-right: 3px;
+  }
+  
+  .context-menu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    display: none;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 5px;
+    z-index: 999;
+  }
+  
+  .menu-item {
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  .message-container:hover .options {
+    display: flex;
+  }
+  
+  .context-menu.show {
+    display: block;
+  }
+
+  
+  
+  

@@ -1,6 +1,9 @@
+
 import { Component, OnInit } from '@angular/core';
-import { LogResponse } from '../model/UserResponce.model';
 import { ChatservicesService } from '../services/chatservices.service';
+import { ToastrService } from 'ngx-toastr';
+import { Message } from '../model/Message.model';
+
 
 @Component({
   selector: 'app-log-viewer',
@@ -8,32 +11,139 @@ import { ChatservicesService } from '../services/chatservices.service';
   styleUrls: ['./log-viewer.component.scss'],
 })
 export class LogViewerComponent implements OnInit {
-  logs: LogResponse[] = [];
-  timeframeOptions = [5, 10, 30];
-  selectedTimeframe = 5;
+  selectedUserId: any | null;
+  messageContent: string = '';
+  receivedData: any = [];
+  errorMessage = '';
+  showOptionsIndex: number = -1;
+  userInfo: any;
+  ascendingOrder: boolean = true;
+  messageLimit: number = 20;
+  editedMessageContent: string = '';
 
-  constructor(private chatService: ChatservicesService) {} 
+  constructor(
+    private chatService: ChatservicesService,
+    private toastr: ToastrService
+  ) { }
 
-  ngOnInit(): void {
-    this.fetchLogs();
+  ngOnInit() {
+    this.chatService.MsgHistoryData.subscribe((data: any) => {      
+     let dataList = Object.values(data)[0];
+     this.receivedData.push(data[0]);
+     this.receivedData.push(data[1]);
+     this.receivedData.push(data[2]);
+     this.receivedData.push(data[3]);
+    });
+
+    this.chatService.UserName.subscribe((user: any) => {
+      this.userInfo = user.name;
+    });
+
+    this.chatService.getSharedData().subscribe((data: any) => {
+      this.selectedUserId = data.userId;
+    });
+
+    this.receivedData.map((message: Message) => {
+      message.isEditing = false;
+    });
   }
 
-  fetchLogs(): void {
-    const currentTime = Math.floor(Date.now() / 1000);
-    const startDateTime = currentTime - this.selectedTimeframe * 60;
-    const endDateTime = currentTime;
-
-    this.chatService.getLogs(startDateTime, endDateTime).subscribe(
-      (logs) => {
-        this.logs = logs;
+  sendMessage() {
+    const message ={
+      receiverId : this.selectedUserId,
+      content : this.messageContent
+    }
+    
+    this.chatService.sendMessage(message).subscribe(
+      (response) => {
+        this.messageContent = '';
+        this.isFetchHistory();
       },
       (error) => {
-        console.error('Error fetching logs:', error);
+        console.error('Error sending message:', error);
+        this.toastr.error(error);
       }
     );
   }
 
-  onTimeframeSelect(): void {
-    this.fetchLogs();
+  onRightClick(event: MouseEvent, index: number) {
+    event.preventDefault();
+    this.showOptionsIndex = index;
+  }
+
+  hideOptions() {
+    this.showOptionsIndex = -1;
+  }
+
+  editMessage(message: Message) {
+    this.editedMessageContent = message.content;
+    message.isEditing = true;
+    this.hideOptions();
+  }
+
+  saveEditedMessage(message: Message) {
+    message.content = this.editedMessageContent;
+
+    this.chatService.updateMessage(message.messageId, message.content).subscribe(
+      (response) => {
+        message.isEditing = false;
+        this.editedMessageContent = '';
+        this.toastr.success('Message updated successfully');
+      },
+      (error: string | undefined) => {
+        this.errorMessage = 'Something went wrong';
+        this.toastr.error(error);
+      }
+    );
+  }
+
+  cancelEdit(message: Message) {
+    message.isEditing = false;
+    this.editedMessageContent = '';
+  }
+
+  deleteMessage(messageId: string) {
+    const confirmDelete = window.confirm('You want to delete this message');
+    if (confirmDelete) {
+      this.chatService.deleteMessage(messageId).subscribe(
+        (response) => {
+          this.toastr.success('Message deleted successfully');
+          this.isFetchHistory();
+        },
+        (error) => {
+          console.error('Error in message:', error);
+          this.toastr.error(error);
+        }
+      );
+    }
+
+    this.hideOptions();
+  }
+
+  isFetchHistory() {
+    const request = {
+      userId: this.selectedUserId,
+      sort: this.ascendingOrder ? 'ASC' : 'DESC',
+      count: this.messageLimit
+    };
+
+    this.chatService.getConversationHistory(this.selectedUserId).subscribe(
+      (res: any) => {
+        this.receivedData = Object.values(res)[0];
+      },
+      (error: any) => {
+        this.toastr.error(error);
+      }
+    );
+  }
+
+  toggleSortOrder() {
+    this.ascendingOrder = !this.ascendingOrder;
+    this.isFetchHistory();
+  }
+
+  loadMoreMessages() {
+    this.messageLimit += 20;
+    this.isFetchHistory();
   }
 }

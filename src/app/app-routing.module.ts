@@ -9,16 +9,15 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, // Set login as the default page
   { path: 'register', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'user', component: UserListComponent },
-  { path: 'logs', component: LogViewerComponent },
-  
+  {
+    path: 'user',
+    component: UserListComponent,
+    children: [{ path: ':userId', component: LogViewerComponent }], // Corrected child route
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-
-export class AppRoutingModule {
-
- }
+export class AppRoutingModule {}
