@@ -27,14 +27,13 @@ export class LogViewerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.chatService.MsgHistoryData.subscribe((data: any) => {      
-     let dataList = Object.values(data)[0];
-     this.receivedData.push(data[0]);
-     this.receivedData.push(data[1]);
-     this.receivedData.push(data[2]);
-     this.receivedData.push(data[3]);
-    });
 
+    this.chatService.MsgHistoryData.subscribe((data: any) => {
+      this.receivedData = [];
+      let dataList = Object.values(data);
+      this.receivedData=dataList;
+    });
+    // setInterval(() => this.autoSaveData(), 5000);
     this.chatService.UserName.subscribe((user: any) => {
       this.userInfo = user.name;
     });
@@ -47,13 +46,20 @@ export class LogViewerComponent implements OnInit {
       message.isEditing = false;
     });
   }
+// Inside your component class
+getMessageClasses(message: any) {
+  return {
+    'sender': message.senderId === this.selectedUserId,
+    'receiver': message.senderId !== this.selectedUserId
+  };
+}
 
   sendMessage() {
-    const message ={
-      receiverId : this.selectedUserId,
-      content : this.messageContent
+    const message = {
+      receiverId: this.selectedUserId,
+      content: this.messageContent
     }
-    
+
     this.chatService.sendMessage(message).subscribe(
       (response) => {
         this.messageContent = '';
@@ -81,10 +87,13 @@ export class LogViewerComponent implements OnInit {
     this.hideOptions();
   }
 
-  saveEditedMessage(message: Message) {
+  saveEditedMessage(message: any) {
     message.content = this.editedMessageContent;
-
-    this.chatService.updateMessage(message.messageId, message.content).subscribe(
+    const messages = {
+      messageId: message.id,
+      content: this.editedMessageContent
+    }
+    this.chatService.EditMessage(messages).subscribe(
       (response) => {
         message.isEditing = false;
         this.editedMessageContent = '';

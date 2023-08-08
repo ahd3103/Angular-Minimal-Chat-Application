@@ -65,7 +65,7 @@ ul.mss-style li {
 .sender {
     background-color: #c8b9f5;
     text-align: left;
-    width: 50%;
+    width: 48%;
     float: left;
     margin-bottom: 10px;
     position: relative;
@@ -77,9 +77,9 @@ ul.mss-style li {
 .receiver {
     background-color: #f0f0f0;
     text-align: initial;
-    width: 50%;
+    width: 48%;
     float: right;
-    margin-bottom: 10px;
+    margin: 5px 15px 5px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -208,3 +208,29 @@ header.header-wrapper {
     padding: 0 25px 15px;
     box-shadow: 0px 0px 20px #ebebeb;
 }
+
+/* Assuming you have a container element to hold all the messages */
+.message-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .message-content {
+    max-width: 70%; /* Adjust the maximum width of the message content as needed */
+    margin: 8px;
+    padding: 8px;
+    border-radius: 8px;
+  }
+  
+  .sender {
+    align-self: flex-end;
+    background-color: #cce5ff; /* Adjust the background color for sender messages */
+    color: #000; /* Adjust the text color for sender messages */
+  }
+  
+  .receiver {
+    align-self: flex-start;
+    background-color: #f0f0f0; /* Adjust the background color for receiver messages */
+    color: #000; /* Adjust the text color for receiver messages */
+  }
+  

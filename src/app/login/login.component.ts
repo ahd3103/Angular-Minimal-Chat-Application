@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
            // debugger;
             localStorage.setItem('jwtToken', data.token);
             localStorage.setItem('currentUser', data.profile?.userId!);
-            this.router.navigate(['user']);
+            this.router.navigate(['dash']);
           }
         },
         (err) => {

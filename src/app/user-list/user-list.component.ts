@@ -3,6 +3,9 @@ import { ChatservicesService } from '../services/chatservices.service';
 import { User } from '../model/User.model';
 import { Message } from '../model/Message.model';
 import { Router } from '@angular/router';
+import { LogResponse } from '../model/UserResponce.model';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-user-list',
@@ -13,38 +16,26 @@ export class UserListComponent implements OnInit {
   users: User[] = [];
   messages: Message[] = [];
   chatsMessage: any = [];
-  userId: string = ''; // Initialize with an empty string 
+  userId: string = '';
   messageText: string = '';
   currentUser: string = '';
   showOptions = false;
   dotContextMenu = false;
-
   showContextMenu = false;
+
+  logs: LogResponse[] = [];
+  startDateTime: number = 0;
+  endDateTime: number = 0;
 
   constructor(private chatService: ChatservicesService, private router: Router) { }
 
   ngOnInit(): void {
-    //debugger;
-    this.currentUser = localStorage.getItem('currentUser') ?? '';
-    this.fetchUsers();
+    this.currentUser = localStorage.getItem('currentUser') || '';
+    this.fetchUsers();    
   }
 
-
-  // hideContextMenu() {
-  //   this.showContextMenu = true;
-  //   this.dotContextMenu = false;
-  // }
-
-  // editMessagedot() {
-  //   console.log('Edit message');
-  //   this.showContextMenu = true;
-  // }
-
-  // deleteMessagedot() {
-  //   console.log('Delete message');
-  //   this.showContextMenu = true;
-  // }
-
+  
+ 
   fetchUsers() {
     this.chatService.getUserList().subscribe(
       (res) => {
@@ -52,7 +43,7 @@ export class UserListComponent implements OnInit {
         this.getChatHistory(this.users[0]);
       },
       (err) => {
-        console.error(err);
+        console.error('Error fetching users:', err);
       }
     );
   }
@@ -79,49 +70,16 @@ export class UserListComponent implements OnInit {
     localStorage.setItem('receiverId', user.userId);
     this.chatService.SharedData.next(user);
     this.chatService.getConversationHistory(user.userId)
-      .subscribe((response: Message[]) => {
-        //debugger;
-        this.messages = response;
-        this.chatService.MsgHistoryData.next(response);
-        this.router.navigate([`user/${this.userId}`])
-        this.chatService.UserName.next(user);
-      }, error => {
-        console.error('Error fetching conversation history:', error);
-      });
+      .subscribe(
+        (response: Message[]) => {
+          this.messages = response;
+          this.chatService.MsgHistoryData.next(response);
+          this.router.navigate([`user/${this.userId}`]);
+          this.chatService.UserName.next(user);
+        },
+        error => {
+          console.error('Error fetching conversation history:', error);
+        }
+      );
   }
-  // sendMessage() {
-  //   if (this.messageText.trim() === '') return;
-  //   debugger;
-  //   this.chatService.sendMessage(this.userId, this.messageText)
-  //     .subscribe((response) => {
-  //       this.messages.push(response);
-  //       this.messageText = '';
-  //       this.getChatHistory(this.userId);
-  //     }, error => {
-  //       console.error('Error sending message:', error);
-  //     });
-  // }
-
-  // editMessage(messageId: string, newContent: string) {
-  //   this.chatService.editMessage(messageId, newContent)
-  //     .subscribe(() => {
-  //       const editedMessage = this.messages.find(msg => msg.messageId === messageId);
-  //       if (editedMessage) {
-  //         editedMessage.content = newContent;
-  //       }
-  //     }, error => {
-  //       console.error('Error editing message:', error);
-  //     });
-  // }
-
-  // deleteMessage(messageId: string) {
-  //   this.chatService.deleteMessage(messageId)
-  //     .subscribe(() => {
-  //       this.messages = this.messages.filter(msg => msg.messageId !== messageId);
-  //     }, error => {
-  //       console.error('Error deleting message:', error);
-  //     });
-  // }
-
-
 }

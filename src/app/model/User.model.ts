@@ -15,6 +15,10 @@ export interface SendMessageRequest {
   content: string;
 }
 
+export interface ReqLog {
+  EndTime: any;
+  StartTime: any;
+}
 
 
 

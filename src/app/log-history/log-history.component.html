@@ -1,0 +1,60 @@
+<div style="padding-top: 20px;">
+    <div *ngIf="isdropdownshow">
+        <div class="col-md-4" style="padding-left: 30px;">
+            <select class="form-control" (change)="LogOptionSelect($event)">
+                <option value=5>Last 5 mins</option>
+                <option value=10>Last 10 mins</option>
+                <option value=30>Last 30 mins</option>
+                <option value=0>Custom</option>
+            </select>
+        </div>
+    </div>
+
+    <div *ngIf="!isdropdownshow" class="row" style="text-align: center;">
+        <div class="row col-md-5">
+            <div class="col-md-2">
+                <h5>From :-</h5>
+            </div>
+            <div class="col-md-10">
+                <input class="form-control" [(ngModel)]="selectedFromTime">
+            </div>
+        </div>
+        <div class="col-md-5 row">
+            <div class="col-md-2">
+                <h5>To :-</h5>
+            </div>
+            <div class="col-md-10">
+                <input class="form-control" [(ngModel)]="selectedToTime">
+            </div>
+        </div>
+        <div class="col-md-2 row">
+            <div class="col-md-6">
+                <button (click)="customLogHistory()" class="btn btn-warning" type="button"> Search </button>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+
+<div>
+    <table class="table table-striped ">
+        <thead>
+            <th scope="col">Sr.No</th>
+            <th scope="col">IP</th>
+            <th scope="col">Method</th>
+            <th scope="col">Path</th>
+            <th scope="col">Request Body</th>
+            <th scope="col">Time Of Call</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let log of logs; let i=index">
+                <th scope="row">{{i+1}}</th>
+                <td>{{log.ipOfCaller}}</td>
+                <td>{{log.method}}</td>
+                <td>{{log.path}}</td>
+                <td>{{log.requestBody}}</td>
+                <td>{{log.timeOfCall}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

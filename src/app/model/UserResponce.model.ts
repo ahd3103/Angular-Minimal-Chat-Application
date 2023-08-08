@@ -12,13 +12,13 @@ export class UserResponse{
   }
 
   export class LogResponse{
-    IPOfCaller: string | undefined;
-    Method: string | undefined;
-    Path: string | undefined;
-    QueryString: QueryString | undefined; 
-    RequestBody: string | undefined;
-    TimeOfCall: number | undefined;
-    UserName: string | undefined;
+    ipOfCaller: string | undefined;
+    method: string | undefined;
+    path: string | undefined;
+    queryString: QueryString | undefined; 
+    requestBody: string | undefined;
+    timeOfCall: number | undefined;
+    userName: string | undefined;
   }
 
   export class QueryString {

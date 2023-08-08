@@ -1,4 +1,3 @@
-
 <div class="history-wrapper" *ngIf="selectedUserId !== null && userInfo" (click)="hideOptions()">
   <div class="history-header" *ngIf="userInfo">
     <div class="header-name">
@@ -6,11 +5,9 @@
       <h3>{{ userInfo }}</h3>
     </div>
   </div>
-  <ul class="mss-style">
+  <ul class="mss-style message-container">
     <li *ngFor="let message of receivedData; let i = index">
-      <div class="message-content"
-        [ngClass]="{'sender': message.senderId === selectedUserId, 'receiver': message.senderId !== selectedUserId}"
-        (contextmenu)="onRightClick($event, i)">
+      <div class="message-content" [ngClass]="getMessageClasses(message)">
         <div *ngIf="!message.isEditing">
           {{ message.content }}
         </div>

@@ -9,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { UserListComponent } from './user-list/user-list.component';
 import { LogViewerComponent } from './log-viewer/log-viewer.component';
 import { ToastrModule } from 'ngx-toastr';
+import { LogHistoryComponent } from './log-history/log-history.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { ToastrModule } from 'ngx-toastr';
     RegistrationComponent,
     LoginComponent,
     UserListComponent,
-    LogViewerComponent
+    LogViewerComponent,
+    LogHistoryComponent,
+    DashboardComponent
   
   ],
   imports: [
